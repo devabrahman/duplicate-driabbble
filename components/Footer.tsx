@@ -71,6 +71,13 @@ const Footer = () => {
             links={footerLinks[6].links}
           />
         </div>
+        <div className="flexBetween footer_copyright">
+          <p>@ 20202 Flexibble. All right reserved</p>
+          <p className="text-gray">
+            23,12,123
+            <span className="text-black font-semibold">Project Submit</span>
+          </p>
+        </div>
       </div>
     </footer>
   );
