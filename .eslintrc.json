@@ -41,6 +41,7 @@
         "tsx": "never"
       }
     ],
+    "import/no-extraneous-dependencies": 0,
     "react/function-component-definition": [
       2,
       {
