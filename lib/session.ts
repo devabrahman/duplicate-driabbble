@@ -32,7 +32,7 @@ export const authOptions: NextAuthOptions = {
       try {
         // get the user if they exist
         // if they don't exist, create them.
-        // return true;
+        return true;
       } catch (error: any) {
         console.log('🔐 -> file: session.ts:40 -> signIn -> error:', error);
         return false;
