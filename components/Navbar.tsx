@@ -3,9 +3,11 @@ import Link from 'next/link';
 import React from 'react';
 import { NavLinks } from '@/constants';
 import AuthProviders from './AuthProviders';
+import { getCurrentUser } from '@/lib/session';
 
-const Navbar = () => {
-  const session = {};
+const Navbar = async () => {
+  const session = await getCurrentUser();
+  console.log('🔐 -> file: Navbar.tsx:10 -> Navbar -> session:', session);
 
   return (
     <nav className=" flex-between navbar">
@@ -20,7 +22,6 @@ const Navbar = () => {
             </Link>
           ))}
         </ul>
-
         <div className="flexCenter gap-4">
           {session ? (
             <>
