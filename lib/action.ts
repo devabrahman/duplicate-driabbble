@@ -10,6 +10,7 @@ const apiUrl = isProduction
 
 const apiKey = isProduction ? process.env.NEXT_PUBLIC_API_KEY || '' : 'letmein';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const serverUrl = isProduction
   ? process.env.NEXT_PUBLIC_SERVER_URL
   : 'http://localhost:3000/';
