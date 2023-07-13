@@ -40,6 +40,11 @@ const Navbar = async () => {
               <button type="button" className="text-sm" onClick={signOut()}>
                 Sign Out
               </button> */}
+
+              <Link href="/create-project">
+                {/* <Button title="Share work" /> */}
+                share work
+              </Link>
             </>
           ) : (
             <AuthProviders />
