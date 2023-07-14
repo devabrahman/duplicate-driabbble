@@ -9,6 +9,7 @@ cloudinary.config({
 
 export async function POST(request: Request) {
   const { path } = await request.json();
+  console.log('🔐 -> file: route.ts:12 -> POST -> path:', path);
 
   if (!path) {
     return NextResponse.json(
