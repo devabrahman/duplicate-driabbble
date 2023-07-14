@@ -1,81 +1,153 @@
 'use client';
 
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import Image from 'next/image';
-import { SessionInterface } from '@/common.type';
+import { useRouter } from 'next/navigation';
+import { FormState, ProjectInterface, SessionInterface } from '@/common.type';
 import FromField from './FromField';
+import CustomMenu from './CustomMenu';
+import { categoryFilters } from '@/constants';
+import Button from './Button';
+import { createNewProject, fetchToken } from '@/lib/action';
 
 type Props = {
   type: string;
   session: SessionInterface;
+  project?: ProjectInterface;
 };
 
-const form = {
-  image: '',
-  title: '',
-  description: ''
-};
+const ProjectForm = ({ type, session, project }: Props) => {
+  const router = useRouter();
 
-const ProjectForm = ({ type, session }: Props) => {
-  const handelFormSubmit = (e: React.FormEvent) => {};
-  const handelChangeImage = (e: ChangeEvent<HTMLInputElement>) => {};
+  const [form, setForm] = useState<FormState>({
+    title: project?.title || '',
+    description: project?.description || '',
+    image: project?.image || '',
+    liveSiteUrl: project?.liveSiteUrl || '',
+    githubUrl: project?.githubUrl || '',
+    category: project?.category || ''
+  });
 
-  const handelStateChange = (fieldName: string, value: string) => {};
+  const [submitting, setSubmitting] = useState<boolean>(false);
+
+  const handelFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    const { token } = await fetchToken();
+
+    try {
+      // creating project
+      await createNewProject(form, session?.user?.id, token);
+      router.push('/');
+    } catch (error) {
+      console.log(
+        '🔐 -> file: ProjectForm.tsx:45 -> handelFormSubmit -> error:',
+        error
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleStateChange = (fieldName: keyof FormState, value: string) => {
+    setForm(prevForm => ({ ...prevForm, [fieldName]: value }));
+  };
+
+  const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+    if (!file.type.includes('image')) {
+      // eslint-disable-next-line consistent-return
+      return alert('Please upload an image files');
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const result = reader.result as string;
+
+      handleStateChange('image', result);
+    };
+  };
 
   return (
     <form className="flexStart form" onSubmit={handelFormSubmit}>
-      <div className="flexStart form_form.image-container">
+      <div className="flexStart form_image-container">
         <label htmlFor="poster" className="flexCenter form_image-label">
           {!form.image && 'Choose a poster for your project'}
         </label>
+
         <input
-          alt="image input"
-          type="image"
           id="image"
+          type="file"
           accept="image/*"
           required={type === 'create'}
           className="form_image-input"
-          onChange={handelChangeImage}
+          onChange={e => handleChangeImage(e)}
         />
+
         {form.image && (
           <Image
-            src={form.image}
-            alt="Project Poster"
+            src={form?.image}
             className="sm:p-10 object-contain z-20"
+            alt="image"
+            fill
           />
         )}
       </div>
+
       <FromField
         title="Title"
         state={form.title}
         placeholder="flexibble"
-        setState={value => handelStateChange('title', value)}
+        setState={value => handleStateChange('title', value)}
       />
       <FromField
         title="Description"
         isTextArea
         state={form.description}
         placeholder="Showcase and descover remakable developer project"
-        setState={value => handelStateChange('description', value)}
+        setState={value => handleStateChange('description', value)}
       />
       <FromField
-        title="Title"
-        state={form.title}
-        placeholder="flexibble"
-        setState={value => handelStateChange('title', value)}
+        title="Live site URL"
+        type="url"
+        state={form.liveSiteUrl}
+        placeholder="https://yourprojecturl.com"
+        setState={value => handleStateChange('liveSiteUrl', value)}
       />
       <FromField
-        title="Title"
-        state={form.title}
-        placeholder="flexibble"
-        setState={value => handelStateChange('title', value)}
+        title="github URL"
+        type="url"
+        state={form.githubUrl}
+        placeholder="https://github.com/yourprojecturl"
+        setState={value => handleStateChange('githubUrl', value)}
       />
-      <FromField
-        title="Title"
-        state={form.title}
-        placeholder="flexibble"
-        setState={value => handelStateChange('title', value)}
+
+      {/* custom input category... */}
+      <CustomMenu
+        title="Category"
+        state={form.category}
+        filters={categoryFilters}
+        setState={value => handleStateChange('category', value)}
       />
+
+      <div className="flexStart w-full">
+        <Button
+          title={
+            submitting
+              ? `${type === 'create' ? 'Creating' : 'Editing'}`
+              : `${type === 'create' ? 'Create' : 'Edit'}`
+          }
+          type="submit"
+          leftIcon={submitting ? '' : '/plus.svg'}
+          submitting={submitting}
+        />
+      </div>
     </form>
   );
 };

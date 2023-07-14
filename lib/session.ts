@@ -63,17 +63,11 @@ export const authOptions: NextAuthOptions = {
     },
 
     async signIn({ user }: { user: AdapterUser | User }) {
-      console.log('🔐 -> file: session.ts:66 -> signIn -> user:', user);
-
       try {
         // get the user if they exist
         const userExists = (await getUser(user?.email as string)) as {
           user: UserProfile;
         };
-        console.log(
-          '🔐 -> file: session.ts:73 -> userExists -> userExists:',
-          userExists
-        );
 
         // if they don't exist, create them.
         if (!userExists.user) {
