@@ -3,7 +3,9 @@ import { GraphQLClient } from 'graphql-request';
 import {
   createProjectMutation,
   createUserMutation,
-  getUserQuery
+  getProjectByIdQuery,
+  getUserQuery,
+  projectsQuery
 } from '@/graphql';
 import { ProjectForm } from '@/common.type';
 
@@ -20,11 +22,11 @@ const serverUrl = isProduction
   ? process.env.NEXT_PUBLIC_SERVER_URL
   : 'http://localhost:3000/';
 
-const clint = new GraphQLClient(apiUrl);
+const client = new GraphQLClient(apiUrl);
 
 const makeGraphQLRequest = async (query: string, variables = {}) => {
   try {
-    return await clint.request(query, variables);
+    return await client.request(query, variables);
   } catch (error) {
     throw error;
     console.log(
@@ -35,12 +37,12 @@ const makeGraphQLRequest = async (query: string, variables = {}) => {
 };
 
 export const getUser = (email: string): any => {
-  clint.setHeader('x-api-key', apiKey);
+  client.setHeader('x-api-key', apiKey);
 
   return makeGraphQLRequest(getUserQuery, { email });
 };
 export const createUser = (name: string, email: string, avatarUrl: string) => {
-  clint.setHeader('x-api-key', apiKey);
+  client.setHeader('x-api-key', apiKey);
 
   const variables = {
     input: {
@@ -83,12 +85,12 @@ export const createNewProject = async (
   token: string
   // eslint-disable-next-line consistent-return
 ) => {
-  clint.setHeader('x-api-key', apiKey);
+  client.setHeader('x-api-key', apiKey);
 
   const imageUrl = await uploadImage(form.image);
 
   if (imageUrl.url) {
-    clint.setHeader('Authorization', `Bearer ${token}`);
+    client.setHeader('Authorization', `Bearer ${token}`);
 
     const variables = {
       input: {
@@ -102,4 +104,17 @@ export const createNewProject = async (
 
     return makeGraphQLRequest(createProjectMutation, variables);
   }
+};
+
+export const fetchAllProjects = async (
+  category?: string,
+  endcursor?: string
+) => {
+  client.setHeader('x-api-key', apiKey);
+  return makeGraphQLRequest(projectsQuery, { category, endcursor });
+};
+
+export const getProjectDetails = (id: string) => {
+  client.setHeader('x-api-key', apiKey);
+  return makeGraphQLRequest(getProjectByIdQuery, { id });
 };

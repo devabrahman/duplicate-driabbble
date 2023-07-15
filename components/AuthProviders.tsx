@@ -16,19 +16,11 @@ type Providers = Record<string, Provider>;
 
 const AuthProviders = (): JSX.Element => {
   const [providers, setProviders] = useState<Providers | null>(null);
-  console.log(
-    '🔐 -> file: AuthProviders.tsx:19 -> AuthProviders -> providers:',
-    providers
-  );
 
   useEffect(() => {
     const fetchProviders = async () => {
       const res: any = await getProviders();
 
-      console.log(
-        '🔐 -> file: AuthProviders.tsx:24 -> fetchProviders -> res:',
-        res
-      );
       setProviders(res);
     };
     fetchProviders();
