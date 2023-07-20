@@ -4,6 +4,7 @@ import {
   createProjectMutation,
   createUserMutation,
   getProjectByIdQuery,
+  getProjectsOfUserQuery,
   getUserQuery,
   projectsQuery
 } from '@/graphql';
@@ -25,14 +26,24 @@ const serverUrl = isProduction
 const client = new GraphQLClient(apiUrl);
 
 const makeGraphQLRequest = async (query: string, variables = {}) => {
+  console.log(
+    '🔐 -> file: action.ts:29 -> makeGraphQLRequest -> variables:',
+    variables
+  );
+
+  console.log(
+    '🔐 -> file: action.ts:29 -> makeGraphQLRequest -> query:',
+    query
+  );
+
   try {
     return await client.request(query, variables);
   } catch (error) {
-    throw error;
     console.log(
       '🔐 -> file: action.ts:6 -> makeGraphQLRequest -> error:',
       error
     );
+    throw error;
   }
 };
 
@@ -117,4 +128,9 @@ export const fetchAllProjects = async (
 export const getProjectDetails = (id: string) => {
   client.setHeader('x-api-key', apiKey);
   return makeGraphQLRequest(getProjectByIdQuery, { id });
+};
+
+export const getUserProjects = (id: string, last?: number) => {
+  client.setHeader('x-api-key', apiKey);
+  return makeGraphQLRequest(getProjectsOfUserQuery, { id, last });
 };

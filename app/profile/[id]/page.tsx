@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { UserProfile } from '@/common.type';
-import { getUserProjects } from '@/lib/actions';
 import ProfilePage from '@/components/ProfilePage';
+import { getUserProjects } from '@/lib/action';
 
 type Props = {
   params: {
