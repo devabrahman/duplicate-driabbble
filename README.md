@@ -16,10 +16,7 @@ pnpm dev
 
 2nd Start graphql. 
 ```bash
-#windows
 npx grafbase@0.24 dev
-# linux
-npx grafbase dev
 ```
 
 
