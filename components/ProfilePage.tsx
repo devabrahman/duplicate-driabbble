@@ -38,9 +38,9 @@ const ProfilePage = ({ user }: Props) => (
         </div>
       </div>
 
-      {user?.projects?.edges?.length > 0 ? (
+      {user?.project?.edges?.length > 0 ? (
         <Image
-          src={user?.projects?.edges[0]?.node?.image}
+          src={user?.project?.edges[0]?.node?.image}
           alt="project image"
           width={739}
           height={554}
@@ -61,7 +61,7 @@ const ProfilePage = ({ user }: Props) => (
       <p className="w-full text-left text-lg font-semibold">Recent Work</p>
 
       <div className="profile_projects">
-        {user?.projects?.edges?.map(({ node }: { node: ProjectInterface }) => (
+        {user?.project?.edges?.map(({ node }: { node: ProjectInterface }) => (
           <ProjectCard
             key={`${node?.id}`}
             id={node?.id}

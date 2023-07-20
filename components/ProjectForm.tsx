@@ -8,7 +8,7 @@ import FromField from './FromField';
 import CustomMenu from './CustomMenu';
 import { categoryFilters } from '@/constants';
 import Button from './Button';
-import { createNewProject, fetchToken } from '@/lib/action';
+import { createNewProject, fetchToken, updateProject } from '@/lib/action';
 
 type Props = {
   type: string;
@@ -17,6 +17,11 @@ type Props = {
 };
 
 const ProjectForm = ({ type, session, project }: Props) => {
+  console.log(
+    '🔐 -> file: ProjectForm.tsx:20 -> ProjectForm -> project:',
+    project
+  );
+
   const router = useRouter();
 
   const [form, setForm] = useState<FormState>({
@@ -37,9 +42,17 @@ const ProjectForm = ({ type, session, project }: Props) => {
     const { token } = await fetchToken();
 
     try {
-      // creating project
-      await createNewProject(form, session?.user?.id, token);
-      router.push('/');
+      if (type === 'create') {
+        await createNewProject(form, session?.user?.id, token);
+
+        router.push('/');
+      }
+
+      if (type === 'edit') {
+        await updateProject(form, project?.id as string, token);
+
+        router.push('/');
+      }
     } catch (error) {
       console.log(
         '🔐 -> file: ProjectForm.tsx:45 -> handelFormSubmit -> error:',
@@ -140,7 +153,7 @@ const ProjectForm = ({ type, session, project }: Props) => {
         <Button
           title={
             submitting
-              ? `${type === 'create' ? 'Creating' : 'Editing'}`
+              ? `${type === 'edit' ? 'Updateing...' : 'Creating...'}`
               : `${type === 'create' ? 'Create' : 'Edit'}`
           }
           type="submit"

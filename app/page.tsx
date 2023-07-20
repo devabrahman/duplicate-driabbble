@@ -2,6 +2,8 @@ import React from 'react';
 import { fetchAllProjects } from '@/lib/action';
 import { ProjectInterface } from '@/common.type';
 import ProjectCard from '@/components/ProjectCard';
+import Categories from '@/components/Categories';
+import LoadMore from '@/components/LoadMore';
 
 type ProjectsSearch = {
   [x: string]: any;
@@ -28,7 +30,7 @@ const Home = async () => {
 
   return (
     <section className="flex flex-start flex-col paddings mx-16">
-      <h1>Categories</h1>
+      <Categories />
       <section className="projects-grid">
         {projectToDisplay.map(({ node }: { node: ProjectInterface }) => (
           <ProjectCard
@@ -42,7 +44,12 @@ const Home = async () => {
           />
         ))}
       </section>
-      <h1>LoadMore</h1>
+      <LoadMore
+        startCursor={data?.projectSearch?.pageInfo?.startCursor}
+        endCursor={data?.projectSearch?.pageInfo?.endCursor}
+        hasPreviousPage={data?.projectSearch?.pageInfo?.hasPreviousPage}
+        hasNextPage={data?.projectSearch?.pageInfo.hasNextPage}
+      />
     </section>
   );
 };

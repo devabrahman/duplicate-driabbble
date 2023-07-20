@@ -128,7 +128,7 @@ export const getProjectsOfUserQuery = `
       avatarUrl
       githubUrl
       linkedinUrl
-      projects(last: $last) {
+      project(last: $last) {
         edges {
           node {
             id

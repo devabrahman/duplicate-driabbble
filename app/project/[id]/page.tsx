@@ -4,15 +4,15 @@ import Link from 'next/link';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getCurrentUser } from '@/lib/session';
-// import ProjectActions from '@/components/ProjectActions';
-// import RelatedProjects from '@/components/RelatedProjects';
+import ProjectActions from '@/components/ProjectActions';
+import RelatedProjects from '@/components/RelatedProjects';
 
 import { getProjectDetails } from '@/lib/action';
 import { ProjectInterface } from '@/common.type';
 import Model from '@/components/Model';
 
 const Project = async ({ params: { id } }: { params: { id: string } }) => {
-  // const session = await getCurrentUser();
+  const session = await getCurrentUser();
   const result = (await getProjectDetails(id)) as {
     project?: ProjectInterface;
   };
@@ -55,12 +55,11 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
           </div>
         </div>
 
-        {/* {session?.user?.email === projectDetails?.createdBy?.email && (
+        {session?.user?.email === projectDetails?.createdBy?.email && (
           <div className="flex justify-end items-center gap-2">
             <ProjectActions projectId={projectDetails?.id} />
           </div>
         )}
-        */}
       </section>
 
       <section className="mt-14">
@@ -106,8 +105,6 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
             <Image
               src={projectDetails?.createdBy?.avatarUrl}
               className="rounded-full"
-              // width={82}
-              // height={82}
               fill
               alt="profile image"
             />
@@ -116,10 +113,10 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
         <span className="w-full h-0.5 bg-light-white-200" />
       </section>
 
-      {/* <RelatedProjects
+      <RelatedProjects
         userId={projectDetails?.createdBy?.id}
         projectId={projectDetails?.id}
-      /> */}
+      />
     </Model>
   );
 };
