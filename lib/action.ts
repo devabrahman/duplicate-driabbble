@@ -32,8 +32,8 @@ const makeGraphQLRequest = async (query: string, variables = {}) => {
     return await client.request(query, variables);
   } catch (error) {
     console.log(
-      '🔐 -> file: action.ts:33 -> makeGraphQLRequest -> error:',
-      error
+      '🔐 -> file: action.ts:33 -> makeGraphQLRequest -> error:'
+      // error
     );
     throw error;
   }
