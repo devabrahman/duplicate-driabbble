@@ -18,11 +18,11 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const apiUrl = isProduction
   ? process.env.NEXT_PUBLIC_GRAFBASE_API_URL || ''
-  : 'https://duplicate-driabbble-main-devabrahman-2qssqq52.grafbase.app/graphql';
+  : 'http://127.0.0.1:4000/graphql';
 
 const apiKey = isProduction
   ? process.env.NEXT_PUBLIC_GRAFBASE_API_KEY || ''
-  : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODk5MTU1ODksImlzcyI6ImdyYWZiYXNlIiwiYXVkIjoiMDFINVZEMlo3WVozN1lWNFpON1Q1WFo5V04iLCJqdGkiOiIwMUg1VkQzMENZNFJSOThGRkdTWEdFSjZDUCIsImVudiI6InByb2R1Y3Rpb24iLCJwdXJwb3NlIjoicHJvamVjdC1hcGkta2V5In0.DnftKR4XDtYXVzlHbEp8z-_4aGqf_zifvdfEAiDQspA';
+  : 'letmein';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const serverUrl = isProduction
