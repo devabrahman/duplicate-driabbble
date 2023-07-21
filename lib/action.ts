@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-useless-catch */
 import { GraphQLClient } from 'graphql-request';
 import {
+  allProjectsQuery,
   createProjectMutation,
   createUserMutation,
   deleteProjectMutation,
@@ -13,31 +15,26 @@ import {
 import { ProjectForm } from '@/common.type';
 
 // const isProduction = process.env.NODE_ENV === 'production';
-const isProduction = true;
+const isProduction = false;
 
 const apiUrl = isProduction
   ? process.env.NEXT_PUBLIC_GRAFBASE_API_URL || ''
-  : 'http://127.0.0.1:4000/graphql';
+  : 'https://duplicate-driabbble-main-devabrahman-2qssqq52.grafbase.app/graphql';
 
 const apiKey = isProduction
   ? process.env.NEXT_PUBLIC_GRAFBASE_API_KEY || ''
-  : 'letmein';
+  : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODk5MTU1ODksImlzcyI6ImdyYWZiYXNlIiwiYXVkIjoiMDFINVZEMlo3WVozN1lWNFpON1Q1WFo5V04iLCJqdGkiOiIwMUg1VkQzMENZNFJSOThGRkdTWEdFSjZDUCIsImVudiI6InByb2R1Y3Rpb24iLCJwdXJwb3NlIjoicHJvamVjdC1hcGkta2V5In0.DnftKR4XDtYXVzlHbEp8z-_4aGqf_zifvdfEAiDQspA';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const serverUrl = isProduction
-  ? process.env.NEXT_PUBLIC_SERVER_URL
+  ? 'http://localhost:3000/'
   : 'http://localhost:3000/';
 
 const client = new GraphQLClient(apiUrl);
 
 const makeGraphQLRequest = async (query: string, variables = {}) => {
-  console.log(
-    '🔐 -> file: action.ts:34 -> makeGraphQLRequest -> variables:',
-    variables
-  );
-
   try {
-    return await client.request(query, variables);
+    return await client?.request(query, variables);
   } catch (error) {
     console.log(
       '🔐 -> file: action.ts:33 -> makeGraphQLRequest -> error:'
@@ -122,7 +119,7 @@ export const fetchAllProjects = async (
   endcursor?: string
 ) => {
   client.setHeader('x-api-key', apiKey);
-  return makeGraphQLRequest(projectsQuery, { category, endcursor });
+  return makeGraphQLRequest(allProjectsQuery);
 };
 
 export const getProjectDetails = (id: string) => {

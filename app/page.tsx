@@ -18,6 +18,7 @@ type ProjectsSearch = {
 
 const Home = async () => {
   const data = (await fetchAllProjects()) as ProjectsSearch;
+
   const projectToDisplay = data?.projectSearch?.edges || [];
   if (projectToDisplay.length === 0) {
     <section className="flexStart flex-col paddings">
