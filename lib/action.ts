@@ -12,7 +12,8 @@ import {
 } from '@/graphql';
 import { ProjectForm } from '@/common.type';
 
-const isProduction = process.env.NODE_ENV === 'production';
+// const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = true;
 
 const apiUrl = isProduction
   ? process.env.NEXT_PUBLIC_GRAFBASE_API_URL || ''
@@ -30,6 +31,11 @@ const serverUrl = isProduction
 const client = new GraphQLClient(apiUrl);
 
 const makeGraphQLRequest = async (query: string, variables = {}) => {
+  console.log(
+    '🔐 -> file: action.ts:34 -> makeGraphQLRequest -> variables:',
+    variables
+  );
+
   try {
     return await client.request(query, variables);
   } catch (error) {
