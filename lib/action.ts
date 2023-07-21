@@ -14,8 +14,7 @@ import {
 } from '@/graphql';
 import { ProjectForm } from '@/common.type';
 
-// const isProduction = process.env.NODE_ENV === 'production';
-const isProduction = false;
+const isProduction = process.env.NODE_ENV === 'production';
 
 const apiUrl = isProduction
   ? process.env.NEXT_PUBLIC_GRAFBASE_API_URL || ''
@@ -27,7 +26,7 @@ const apiKey = isProduction
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const serverUrl = isProduction
-  ? 'http://localhost:3000/'
+  ? process.env.NEXT_PUBLIC_SERVER_URL
   : 'http://localhost:3000/';
 
 const client = new GraphQLClient(apiUrl);
