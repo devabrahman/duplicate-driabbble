@@ -51,7 +51,7 @@ const Home = () => {
       <Categories />
       {isLoadin ? (
         <div className="flex justify-center align-middle text-xl pt-8">
-          <InfinitySpin width="80" color="green" />
+          <InfinitySpin width="600" color="green" />
         </div>
       ) : (
         <section className="projects-grid">
