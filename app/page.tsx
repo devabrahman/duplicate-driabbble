@@ -4,6 +4,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { InfinitySpin } from 'react-loader-spinner';
 import { fetchAllProjects } from '@/lib/action';
 import { ProjectInterface } from '@/common.type';
 import ProjectCard from '@/components/ProjectCard';
@@ -24,11 +25,14 @@ type ProjectsSearch = {
 const Home = () => {
   const router = useRouter();
   const [data, setdata] = useState<ProjectsSearch | null>(null);
+  const [isLoadin, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
+      setIsLoading(true);
       const getData = (await fetchAllProjects()) as ProjectsSearch;
       setdata(getData);
+      setIsLoading(false);
     })();
   }, [router]);
 
@@ -45,19 +49,25 @@ const Home = () => {
   return (
     <section className="flex flex-start flex-col paddings mx-16">
       <Categories />
-      <section className="projects-grid">
-        {projectToDisplay.map(({ node }: { node: ProjectInterface }) => (
-          <ProjectCard
-            key={node?.id.toString()}
-            id={node?.id}
-            image={node?.image}
-            title={node?.title}
-            name={node?.createdBy.name}
-            avatarUrl={node?.createdBy.avatarUrl}
-            userId={node?.createdBy.id}
-          />
-        ))}
-      </section>
+      {isLoadin ? (
+        <div className="flex justify-center align-middle text-xl pt-8">
+          <InfinitySpin width="80" color="green" />
+        </div>
+      ) : (
+        <section className="projects-grid">
+          {projectToDisplay.map(({ node }: { node: ProjectInterface }) => (
+            <ProjectCard
+              key={node?.id.toString()}
+              id={node?.id}
+              image={node?.image}
+              title={node?.title}
+              name={node?.createdBy.name}
+              avatarUrl={node?.createdBy.avatarUrl}
+              userId={node?.createdBy.id}
+            />
+          ))}
+        </section>
+      )}
       <LoadMore
         startCursor={data?.projectSearch?.pageInfo?.startCursor}
         endCursor={data?.projectSearch?.pageInfo?.endCursor}

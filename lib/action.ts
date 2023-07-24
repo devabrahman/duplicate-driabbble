@@ -1,13 +1,13 @@
 /* eslint-disable no-useless-catch */
 import { GraphQLClient } from 'graphql-request';
 import {
+  allProjectsQuery,
   createProjectMutation,
   createUserMutation,
   deleteProjectMutation,
   getProjectByIdQuery,
   getProjectsOfUserQuery,
   getUserQuery,
-  projectsQuery,
   updateProjectMutation
 } from '@/graphql';
 import { ProjectForm } from '@/common.type';
@@ -16,13 +16,9 @@ const isProduction = process.env.NODE_ENV === 'production';
 // const isProduction = true;
 console.log('🔐 -> file: action.ts:17 -> isProduction:', isProduction);
 
-const apiUrl = isProduction
-  ? process.env.NEXT_PUBLIC_GRAFBASE_API_URL || ''
-  : 'http://127.0.0.1:4000/graphql';
+const apiUrl = process.env.NEXT_PUBLIC_GRAFBASE_API_URL || '';
 
-const apiKey = isProduction
-  ? process.env.NEXT_PUBLIC_GRAFBASE_API_KEY || ''
-  : 'letmein';
+const apiKey = process.env.NEXT_PUBLIC_GRAFBASE_API_KEY || '';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const serverUrl = isProduction
@@ -118,12 +114,9 @@ export const createNewProject = async (
   }
 };
 
-export const fetchAllProjects = async (
-  category?: string,
-  endcursor?: string
-) => {
+export const fetchAllProjects = async () => {
   client.setHeader('x-api-key', apiKey);
-  return makeGraphQLRequest(projectsQuery, { category, endcursor });
+  return makeGraphQLRequest(allProjectsQuery);
 };
 
 export const getProjectDetails = (id: string) => {
