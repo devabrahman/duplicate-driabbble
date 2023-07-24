@@ -26,22 +26,6 @@ const Navbar = async () => {
           {session ? (
             <>
               <ProfileMenu session={session} />
-              {/* {session?.user?.image && (
-                <Link href={`/profile/${session?.user?.id}`}>
-                  <Image
-                    src={session?.user?.image}
-                    alt="User Photo"
-                    width={40}
-                    height={40}
-                    style={{ borderRadius: '100%' }}
-                  />
-                </Link>
-              )}
-              <Link href="/create-project">Create Project</Link>
-              <button type="button" className="text-sm" onClick={signOut()}>
-                Sign Out
-              </button> */}
-
               <Link href="/create-project">
                 <Button title="Share Work" />
               </Link>

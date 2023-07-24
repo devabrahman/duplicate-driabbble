@@ -1,4 +1,9 @@
-import React from 'react';
+/* eslint-disable react/no-unused-prop-types */
+
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { fetchAllProjects } from '@/lib/action';
 import { ProjectInterface } from '@/common.type';
 import ProjectCard from '@/components/ProjectCard';
@@ -16,8 +21,17 @@ type ProjectsSearch = {
   };
 };
 
-const Home = async () => {
-  const data = (await fetchAllProjects()) as ProjectsSearch;
+const Home = () => {
+  const router = useRouter();
+  const [data, setdata] = useState<ProjectsSearch | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const getData = (await fetchAllProjects()) as ProjectsSearch;
+      setdata(getData);
+    })();
+  }, [router]);
+
   const projectToDisplay = data?.projectSearch?.edges || [];
   if (projectToDisplay.length === 0) {
     <section className="flexStart flex-col paddings">
