@@ -67,7 +67,10 @@ export const authOptions: NextAuthOptions = {
         const userExists = (await getUser(user?.email as string)) as {
           user: UserProfile;
         };
-
+        console.log(
+          '🔐 -> file: session.ts:70 -> userExists -> userExists:',
+          userExists
+        );
         // if they don't exist, create them.
         if (!userExists.user) {
           await createUser(

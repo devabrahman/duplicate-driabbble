@@ -22,6 +22,7 @@ export async function POST(request: Request) {
     const options = {
       use_fileName: true,
       unique_filename: false,
+      folder: 'duplicate-dribbble-image',
       overwrite: true,
       transformation: [{ width: 1000, height: 727, crop: 'scale' }]
     };

@@ -12,8 +12,9 @@ import {
 } from '@/graphql';
 import { ProjectForm } from '@/common.type';
 
-// const isProduction = process.env.NODE_ENV === 'production';
-const isProduction = true;
+const isProduction = process.env.NODE_ENV === 'production';
+// const isProduction = true;
+console.log('🔐 -> file: action.ts:17 -> isProduction:', isProduction);
 
 const apiUrl = isProduction
   ? process.env.NEXT_PUBLIC_GRAFBASE_API_URL || ''
